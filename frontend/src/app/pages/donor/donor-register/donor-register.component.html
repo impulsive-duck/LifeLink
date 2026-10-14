@@ -1,0 +1,399 @@
+<div class="registration-layout">
+  <!-- Left Side: Hero Brand Panel -->
+  <div class="left-hero-panel">
+    <div class="hero-brand-top">
+      <a routerLink="/" class="brand-link">
+        <div class="brand-badge">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+          </svg>
+        </div>
+        <div>
+          <span class="brand-name">LifeLink</span>
+          <span class="brand-tag">National Donor Registry</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="hero-central-card">
+      <div class="hero-quote-badge">Voluntary Blood Donation</div>
+      <h2 class="hero-quote-title">Every drop can ignite a heartbeat.</h2>
+      <p class="hero-quote-desc">
+        Join verified voluntary donors connected directly with regional accredited blood banks and hospital emergency centers.
+      </p>
+
+      <div class="hero-eligibility-bullet">
+        <div class="bullet-item">
+          <span class="bullet-icon">🩸</span>
+          <div>
+            <strong>Age Criterion:</strong>
+            <span>18 to 65 years old</span>
+          </div>
+        </div>
+        <div class="bullet-item">
+          <span class="bullet-icon">⚖️</span>
+          <div>
+            <strong>Minimum Weight:</strong>
+            <span>45 kg or higher</span>
+          </div>
+        </div>
+        <div class="bullet-item">
+          <span class="bullet-icon">🔬</span>
+          <div>
+            <strong>Hemoglobin Level:</strong>
+            <span>&ge; 12.5 g/dL required</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-footer-note">
+      <span>🔒 Encrypted donor health profile compliant with National Blood Transfusion Council regulations.</span>
+    </div>
+  </div>
+
+  <!-- Right Side: Multi-Step Registration Form -->
+  <div class="right-form-panel">
+    <div class="form-container">
+      <!-- Top Action Bar -->
+      <div class="form-top-bar">
+        <div>
+          <div class="badge-role">Voluntary Donor Onboarding</div>
+          <h1 class="page-title">Donor Registration</h1>
+          <p class="page-subtitle">Complete your profile to receive life-saving donation alerts.</p>
+        </div>
+        <button type="button" class="btn btn-autofill" (click)="fillDemoData()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+          </svg>
+          <span>Fill Demo Donor</span>
+        </button>
+      </div>
+
+      <!-- Stepper Progress Indicator -->
+      <div class="form-stepper">
+        <div class="step-badge" [class.step-active]="currentStep === 1" [class.step-completed]="currentStep > 1" (click)="currentStep = 1">
+          <div class="step-num">{{ currentStep > 1 ? '✓' : '1' }}</div>
+          <span class="step-title">Account & Security</span>
+        </div>
+        <div class="step-separator" [class.sep-active]="currentStep > 1"></div>
+        <div class="step-badge" [class.step-active]="currentStep === 2" [class.step-completed]="currentStep > 2" (click)="isStep1Valid() && currentStep = 2">
+          <div class="step-num">{{ currentStep > 2 ? '✓' : '2' }}</div>
+          <span class="step-title">Health & Eligibility</span>
+        </div>
+        <div class="step-separator" [class.sep-active]="currentStep > 2"></div>
+        <div class="step-badge" [class.step-active]="currentStep === 3" [class.step-completed]="currentStep > 3" (click)="isStep1Valid() && isStep2Valid() && currentStep = 3">
+          <div class="step-num">3</div>
+          <span class="step-title">Affiliation & Address</span>
+        </div>
+      </div>
+
+      <!-- Form Body -->
+      <form [formGroup]="donorForm" class="donor-reg-form" novalidate>
+        
+        <!-- STEP 1: Account Information -->
+        <div *ngIf="currentStep === 1" class="step-slide">
+          <div class="section-banner">
+            <h3 class="section-heading">Step 1: Account & Contact Details</h3>
+            <p class="section-text">Create your confidential login credentials and communication coordinates.</p>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group col-span-2">
+              <label class="form-label">Donor Full Legal Name <span class="req">*</span></label>
+              <input 
+                type="text" 
+                formControlName="fullName" 
+                class="form-control" 
+                placeholder="e.g. Rahul Sharma"
+                [class.is-invalid]="f['fullName'].touched && f['fullName'].invalid"
+              />
+              <div class="form-error" *ngIf="f['fullName'].touched && (f['fullName'].errors?.['required'] || f['fullName'].errors?.['minlength'])">
+                Please provide your full legal name (minimum 3 characters).
+              </div>
+              <div class="form-error" *ngIf="f['fullName'].touched && f['fullName'].errors?.['hasDigits']">
+                Donor name must not contain digits
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Username (Unique ID) <span class="req">*</span></label>
+              <input 
+                type="text" 
+                formControlName="username" 
+                class="form-control" 
+                placeholder="e.g. rahul_donor"
+                [class.is-invalid]="f['username'].touched && f['username'].invalid"
+              />
+              <div class="form-error" *ngIf="f['username'].touched && f['username'].invalid">
+                Username must be at least 4 characters without spaces.
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Contact Mobile Number (10 Digits) <span class="req">*</span></label>
+              <input 
+                type="tel" 
+                maxlength="10" 
+                formControlName="mobileNumber" 
+                class="form-control" 
+                placeholder="e.g. 9820012345"
+                [class.is-invalid]="f['mobileNumber'].touched && f['mobileNumber'].invalid"
+              />
+              <div class="form-error" *ngIf="f['mobileNumber'].touched && f['mobileNumber'].invalid">
+                Must be a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9.
+              </div>
+            </div>
+
+            <div class="form-group col-span-2">
+              <label class="form-label">Personal Email Address <span class="req">*</span></label>
+              <input 
+                type="email" 
+                formControlName="email" 
+                class="form-control" 
+                placeholder="e.g. rahul.sharma@example.com"
+                [class.is-invalid]="f['email'].touched && f['email'].invalid"
+              />
+              <div class="form-error" *ngIf="f['email'].touched && f['email'].invalid">
+                Please enter a valid personal email address.
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Password <span class="req">*</span></label>
+              <div class="password-wrap">
+                <input 
+                  [type]="showPassword ? 'text' : 'password'" 
+                  formControlName="password" 
+                  class="form-control" 
+                  placeholder="Min. 8 characters"
+                  [class.is-invalid]="f['password'].touched && f['password'].invalid"
+                />
+                <button type="button" class="btn-toggle-pw" (click)="showPassword = !showPassword">
+                  {{ showPassword ? 'Hide' : 'Show' }}
+                </button>
+              </div>
+              <div class="form-error" *ngIf="f['password'].touched && f['password'].invalid">
+                Password must contain at least 8 characters.
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Confirm Password <span class="req">*</span></label>
+              <div class="password-wrap">
+                <input 
+                  [type]="showConfirmPassword ? 'text' : 'password'" 
+                  formControlName="confirmPassword" 
+                  class="form-control" 
+                  placeholder="Re-enter password"
+                  [class.is-invalid]="f['confirmPassword'].touched && (f['confirmPassword'].invalid || donorForm.hasError('mismatch'))"
+                />
+                <button type="button" class="btn-toggle-pw" (click)="showConfirmPassword = !showConfirmPassword">
+                  {{ showConfirmPassword ? 'Hide' : 'Show' }}
+                </button>
+              </div>
+              <div class="form-error" *ngIf="f['confirmPassword'].touched && donorForm.hasError('mismatch')">
+                Passwords do not match.
+              </div>
+            </div>
+          </div>
+
+          <div class="step-action-bar single-right">
+            <button type="button" class="btn btn-primary btn-next" (click)="nextStep()">
+              <span>Next: Health Information &rarr;</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 2: Health & Eligibility -->
+        <div *ngIf="currentStep === 2" class="step-slide">
+          <div class="section-banner">
+            <h3 class="section-heading">Step 2: Medical & Eligibility Parameters</h3>
+            <p class="section-text">Statutory health standards required for safe voluntary blood donation.</p>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Biological Gender <span class="req">*</span></label>
+              <select formControlName="gender" class="form-select">
+                <option value="MALE">Male</option>
+                <option value="FEMALE">Female</option>
+                <option value="OTHER">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Date of Birth (18 to 65 Years) <span class="req">*</span></label>
+              <input 
+                type="date" 
+                formControlName="dateOfBirth" 
+                class="form-control"
+                [class.is-invalid]="f['dateOfBirth'].touched && f['dateOfBirth'].invalid"
+              />
+              <!-- Age validation feedback (Requirement 14) -->
+              <div class="form-error" *ngIf="f['dateOfBirth'].touched && f['dateOfBirth'].hasError('underAge')">
+                ⛔ Ineligible: Donors must be at least 18 years old to donate.
+              </div>
+              <div class="form-error" *ngIf="f['dateOfBirth'].touched && f['dateOfBirth'].hasError('overAge')">
+                ⛔ Ineligible: Maximum allowed donor age is 65 years.
+              </div>
+              <div class="form-error" *ngIf="f['dateOfBirth'].touched && f['dateOfBirth'].hasError('futureDate')">
+                Date of birth cannot be in the future.
+              </div>
+              <div class="form-error" *ngIf="f['dateOfBirth'].touched && f['dateOfBirth'].hasError('required')">
+                Date of birth is mandatory.
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Blood Group <span class="req">*</span></label>
+              <select formControlName="bloodGroup" class="form-select">
+                <option *ngFor="let bg of bloodGroups" [value]="bg.value">{{ bg.label }}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Donor Body Weight (kg) <span class="req">*</span></label>
+              <input 
+                type="number" 
+                min="45" 
+                max="200" 
+                formControlName="weight" 
+                class="form-control"
+                placeholder="e.g. 65"
+                [class.is-invalid]="f['weight'].touched && f['weight'].invalid"
+              />
+              <div class="form-error" *ngIf="f['weight'].touched && f['weight'].invalid">
+                Minimum weight requirement is 45 kg for blood donation safety.
+              </div>
+            </div>
+
+            <div class="form-group col-span-2">
+              <div class="label-with-help">
+                <label class="form-label">Hemoglobin Level (g/dL) <span class="req">*</span></label>
+                <button type="button" class="btn-help-link" (click)="showHbInfo = !showHbInfo">
+                  ℹ️ Why is Hb &ge; 12.5 g/dL required?
+                </button>
+              </div>
+              <input 
+                type="number" 
+                step="0.1" 
+                min="12.5" 
+                max="20.0" 
+                formControlName="hemoglobin" 
+                class="form-control"
+                placeholder="e.g. 13.5"
+                [class.is-invalid]="f['hemoglobin'].touched && f['hemoglobin'].invalid"
+              />
+              <div class="form-error" *ngIf="f['hemoglobin'].touched && f['hemoglobin'].invalid">
+                Hemoglobin must be &ge; 12.5 g/dL to qualify for voluntary donation.
+              </div>
+
+              <!-- Educational Hemoglobin Help Box (Requirement 15) -->
+              <div class="hb-info-card" *ngIf="showHbInfo">
+                <div class="hb-info-title">
+                  <span>🔬 Hemoglobin Donation Safety Standard</span>
+                  <button type="button" class="btn-close-hb" (click)="showHbInfo = false">&times;</button>
+                </div>
+                <p class="hb-info-body">
+                  National health guidelines require voluntary blood donors to maintain a minimum hemoglobin level of <strong>12.5 g/dL</strong>.
+                  This ensures that donating 350ml–450ml of blood will not cause fatigue, anemia, or dizziness, and that the recipient receives healthy red blood cells capable of optimal oxygen transport.
+                </p>
+                <div class="hb-tips">
+                  <span>💡 Tip: Iron-rich foods (spinach, dates, legumes, beetroot) help maintain healthy hemoglobin levels.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-action-bar">
+            <button type="button" class="btn btn-secondary" (click)="previousStep()">&larr; Back</button>
+            <button type="button" class="btn btn-primary btn-next" (click)="nextStep()">
+              <span>Next: Affiliated Bank & Location &rarr;</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 3: Affiliation & Address -->
+        <div *ngIf="currentStep === 3" class="step-slide">
+          <div class="section-banner">
+            <h3 class="section-heading">Step 3: Blood Bank Affiliation & Address</h3>
+            <p class="section-text">Select your preferred regional blood bank and enter your residential address.</p>
+          </div>
+
+          <div class="form-grid">
+            <!-- Blood Bank Dropdown Selection (Requirement 31) -->
+            <div class="form-group col-span-2">
+              <label class="form-label">Affiliated Regional Blood Bank Center <span class="req">*</span></label>
+              <select formControlName="bloodBankId" class="form-select">
+                <option *ngFor="let bb of bloodBanksList" [value]="bb.id">
+                  {{ bb.bloodBankName }} ({{ bb.city || 'Regional Center' }})
+                </option>
+              </select>
+              <div class="form-hint">Your donation requests and blood drive notifications will be coordinated by this accredited facility.</div>
+            </div>
+
+            <div class="form-group col-span-2">
+              <label class="form-label">Residential Address <span class="req">*</span></label>
+              <textarea 
+                rows="2" 
+                formControlName="address" 
+                class="form-control" 
+                placeholder="Street address, building name, flat number, landmark"
+                [class.is-invalid]="f['address'].touched && f['address'].invalid"
+              ></textarea>
+              <div class="form-error" *ngIf="f['address'].touched && f['address'].invalid">
+                Residential address is required.
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">City / Town <span class="req">*</span></label>
+              <input 
+                type="text" 
+                formControlName="city" 
+                class="form-control" 
+                placeholder="e.g. Mumbai"
+                [class.is-invalid]="f['city'].touched && f['city'].invalid"
+              />
+              <div class="form-error" *ngIf="f['city'].touched && f['city'].invalid">
+                City name is required.
+              </div>
+            </div>
+
+            <!-- Indian States Dropdown (Requirement 12) -->
+            <div class="form-group">
+              <label class="form-label">State / Union Territory <span class="req">*</span></label>
+              <select formControlName="state" class="form-select">
+                <option *ngFor="let state of indianStates" [value]="state">{{ state }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="step-action-bar">
+            <button type="button" class="btn btn-secondary" (click)="previousStep()">&larr; Back</button>
+            <button type="button" class="btn btn-primary btn-lg" (click)="submitForm()" [disabled]="isLoading">
+              <span *ngIf="!isLoading">❤️ Complete Donor Registration</span>
+              <span *ngIf="isLoading">Registering Profile...</span>
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Bottom Sign In Link -->
+      <div class="login-footer-bar">
+        <span>Already have an active donor account?</span>
+        <a routerLink="/donor/login" class="link-signin">Sign In to Donor Portal &rarr;</a>
+      </div>
+
+      <div class="portal-switch-row">
+        <span>Register as another entity:</span>
+        <a routerLink="/blood-bank/register">Blood Bank</a>
+        <span>&bull;</span>
+        <a routerLink="/hospital/register">Hospital Facility</a>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

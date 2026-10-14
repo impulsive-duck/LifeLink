@@ -1,0 +1,691 @@
+/* Global CSS Design System — LifeLink Healthcare Network */
+:root {
+  --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  
+  /* Primary Theme Colors */
+  --primary-red: #dc2626;
+  --primary-red-hover: #b91c1c;
+  --primary-red-light: #fee2e2;
+  --primary-red-subtle: #fff5f5;
+  --primary-red-dark: #991b1b;
+  
+  /* Dark Slate / Navy */
+  --dark-navy: #0f172a;
+  --dark-slate: #1e293b;
+  --slate-border: #334155;
+  --slate-muted: #64748b;
+  --slate-light: #94a3b8;
+  
+  /* Neutrals */
+  --bg-page: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-subtle: #f1f5f9;
+  --border-color: #e2e8f0;
+  --border-focus: #cbd5e1;
+  
+  /* Accent Colors */
+  --emerald-green: #10b981;
+  --emerald-green-light: #dcfce7;
+  --emerald-green-dark: #15803d;
+  
+  --amber-gold: #f59e0b;
+  --amber-gold-light: #fef3c7;
+  --amber-gold-dark: #b45309;
+  
+  --teal-accent: #0f766e;
+  --teal-light: #ccfbf1;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.03);
+  --shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
+  
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-full: 9999px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100%;
+  font-family: var(--font-family);
+  background-color: var(--bg-page);
+  color: var(--dark-navy);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
+
+app-footer {
+  margin-top: auto;
+  display: block;
+  width: 100%;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--dark-navy);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+/* Headings in Dark Banners & Hero Cards */
+.hero-banner h1,
+.hero-banner h2,
+.hero-banner h3,
+.hero-banner .hero-title,
+.hero-welcome-card h1,
+.hero-welcome-card h2,
+.hero-welcome-card h3,
+.hero-welcome-card .hero-title {
+  color: #ffffff !important;
+}
+
+h1 { font-size: 2rem; font-weight: 800; }
+h2 { font-size: 1.5rem; font-weight: 700; }
+h3 { font-size: 1.25rem; font-weight: 600; }
+h4 { font-size: 1rem; font-weight: 600; }
+
+p {
+  color: var(--slate-muted);
+}
+
+a {
+  color: var(--primary-red);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  color: var(--primary-red-hover);
+  text-decoration: underline;
+}
+
+/* Standardized Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font-family);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn-primary {
+  background-color: var(--primary-red);
+  color: #ffffff;
+  border-color: var(--primary-red);
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.25);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--primary-red-hover);
+  border-color: var(--primary-red-hover);
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
+  transform: translateY(-1px);
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.btn-emergency {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
+}
+
+.btn-emergency:hover:not(:disabled) {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  transform: translateY(-1px);
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.btn-secondary {
+  background-color: #ffffff;
+  color: var(--dark-navy);
+  border-color: var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--bg-subtle);
+  border-color: var(--border-focus);
+  color: var(--dark-navy);
+  text-decoration: none;
+}
+
+.btn-danger {
+  background-color: var(--primary-red);
+  color: #ffffff;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: var(--primary-red-hover);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--dark-navy);
+  border-color: var(--border-color);
+}
+
+.btn-outline:hover:not(:disabled) {
+  background-color: var(--bg-subtle);
+  border-color: var(--border-focus);
+  text-decoration: none;
+}
+
+.btn-sm {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8125rem;
+  border-radius: var(--radius-sm);
+}
+
+.btn-lg {
+  padding: 0.8rem 1.6rem;
+  font-size: 1rem;
+  border-radius: var(--radius-md);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* Standardized Form Controls */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1.15rem;
+}
+
+.form-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.form-label .req {
+  color: var(--primary-red);
+  font-weight: 700;
+}
+
+.form-control, .form-select {
+  width: 100%;
+  padding: 0.65rem 0.875rem;
+  font-family: var(--font-family);
+  font-size: 0.875rem;
+  color: var(--dark-navy);
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary-red);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}
+
+.form-control.is-invalid, .form-select.is-invalid {
+  border-color: #ef4444;
+  background-color: #fffafa;
+}
+
+.form-control.is-invalid:focus, .form-select.is-invalid:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+.form-error {
+  font-size: 0.75rem;
+  color: #ef4444;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.15rem;
+}
+
+.form-hint {
+  font-size: 0.75rem;
+  color: var(--slate-muted);
+  line-height: 1.4;
+  margin-top: 0.15rem;
+}
+
+.input-icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon-wrap .input-icon {
+  position: absolute;
+  left: 0.875rem;
+  color: var(--slate-light);
+  pointer-events: none;
+}
+
+.input-icon-wrap .form-control {
+  padding-left: 2.5rem;
+}
+
+/* Standardized Cards */
+.card {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card-hover:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+/* Badges & Status Pills */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.02em;
+}
+
+.badge-crimson { background: var(--primary-red-light); color: var(--primary-red-dark); }
+.badge-success { background: var(--emerald-green-light); color: var(--emerald-green-dark); }
+.badge-warning { background: var(--amber-gold-light); color: var(--amber-gold-dark); }
+.badge-info { background: #e0f2fe; color: #0369a1; }
+.badge-neutral { background: var(--bg-subtle); color: var(--slate-muted); }
+
+/* Custom Scrollbars */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--bg-subtle);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--slate-border);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--slate-muted);
+}
+
+/* LifeLink Centralized Auth Page System */
+.lifelink-auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8fafc;
+}
+
+.lifelink-auth-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.lifelink-brand-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--dark-navy);
+  letter-spacing: -0.03em;
+  text-decoration: none;
+}
+
+.lifelink-brand-logo:hover {
+  text-decoration: none;
+}
+
+.lifelink-brand-logo .brand-icon-box {
+  width: 32px;
+  height: 32px;
+  background: var(--primary-red);
+  color: #ffffff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.lifelink-auth-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.5rem;
+}
+
+.lifelink-auth-container {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.lifelink-auth-card {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 3rem;
+  box-shadow: var(--shadow-lg);
+}
+
+
+.lifelink-auth-header {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.lifelink-portal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  margin-bottom: 0.75rem;
+}
+
+.badge-donor { background: var(--primary-red-light); color: var(--primary-red-dark); }
+.badge-hospital { background: #e0f2fe; color: #0369a1; }
+.badge-bloodbank { background: #fef3c7; color: #92400e; }
+.badge-admin { background: #f1f5f9; color: #334155; }
+
+.lifelink-auth-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--dark-navy);
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.02em;
+}
+
+.lifelink-auth-subtitle {
+  font-size: 0.875rem;
+  color: var(--slate-muted);
+  line-height: 1.45;
+}
+
+.lifelink-auth-footer {
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.lifelink-cross-portals {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+  font-size: 0.8125rem;
+  color: var(--slate-muted);
+  flex-wrap: wrap;
+}
+
+.lifelink-cross-portals a {
+  color: var(--slate-muted);
+  font-weight: 500;
+}
+
+.lifelink-cross-portals a:hover {
+  color: var(--primary-red);
+}
+
+.lifelink-alert-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.15rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  border: 1px solid transparent;
+}
+
+.lifelink-alert-banner.alert-success {
+  background-color: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #166534;
+}
+
+.lifelink-alert-banner.alert-warning {
+  background-color: #fffbeb;
+  border-color: #fde68a;
+  color: #92400e;
+}
+
+.lifelink-alert-banner.alert-danger {
+  background-color: #fef2f2;
+  border-color: #fecaca;
+  color: #991b1b;
+}
+
+.lifelink-alert-banner .alert-title {
+  font-weight: 700;
+  margin-bottom: 0.15rem;
+}
+
+.lifelink-alert-banner .alert-btn-close {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: currentColor;
+  cursor: pointer;
+  opacity: 0.6;
+  padding: 0;
+  margin-left: auto;
+}
+
+.lifelink-alert-banner .alert-btn-close:hover {
+  opacity: 1;
+}
+
+/* Hospital Login Form */
+
+.lifelink-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.lifelink-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.lifelink-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--dark-slate);
+}
+
+.lifelink-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.lifelink-input-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--slate-light);
+  z-index: 2;
+}
+
+.lifelink-input {
+  width: 100%;
+  height: 52px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0 1rem;
+  font-size: 0.95rem;
+  background: #fff;
+  transition: all 0.2s ease;
+}
+
+.lifelink-input.with-icon {
+  padding-left: 44px;
+}
+
+.lifelink-input:focus {
+  outline: none;
+  border-color: var(--primary-red);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}
+
+.lifelink-input.is-invalid {
+  border-color: #ef4444;
+}
+
+.lifelink-error-msg {
+  font-size: 0.8rem;
+  color: #ef4444;
+  margin-top: 0.15rem;
+}
+
+.lifelink-password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--slate-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lifelink-password-toggle:hover {
+  color: var(--dark-slate);
+}
+
+.lifelink-auth-footer p {
+  margin-bottom: 0.5rem;
+}
+
+.lifelink-link-accent {
+  font-weight: 700;
+  color: var(--primary-red);
+}
+
+.lifelink-portal-switcher {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.switcher-label {
+  display: block;
+  color: var(--slate-muted);
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.switcher-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.switcher-link {
+  color: var(--slate-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.switcher-link:hover {
+  color: var(--primary-red);
+  text-decoration: none;
+}
+
+.divider {
+  color: var(--slate-light);
+}
+
+.dot-donor,
+.dot-bb,
+.dot-admin {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.dot-donor {
+  background: #dc2626;
+}
+
+.dot-bb {
+  background: #f59e0b;
+}
+
+.dot-admin {
+  background: #64748b;
+}

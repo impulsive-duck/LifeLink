@@ -1,0 +1,490 @@
+<div class="registration-container">
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <div class="bg-dots"></div>
+    <div class="brand">
+      <img src="assets/images/BloodLink.png" alt="LifeLink Logo" class="logo"> 
+      <div>
+        <h2>LifeLink</h2>
+        <span>Blood Bank Network</span>
+      </div>
+    </div>
+
+    <div class="hero-section">
+      <div class="quote">
+        <h3>"Every donation is a message of hope."</h3>
+        <p>Join the synchronized regional network connecting blood banks with hospitals and eligible voluntary donors.</p>
+      </div>
+
+      <div class="benefits-card">
+        <h4>Facility Network Benefits</h4>
+        <ul class="benefits-list">
+          <li>✨ Real-time inventory synchronization</li>
+          <li>⚡ Emergency hospital dispatch inbox</li>
+          <li>📢 Targeted eligible donor broadcasting</li>
+          <li>📜 Digital certificate verification registry</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+    <div class="panel-header-row">
+      <div>
+        <h1>Register Your <span>Blood Bank</span></h1>
+        <p class="subtitle">Join the centralized emergency blood distribution platform.</p>
+      </div>
+      <button type="button" class="btn btn-outline btn-sm autofill-btn" (click)="fillDemoData()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+        </svg>
+        <span>Auto-fill Demo Bank</span>
+      </button>
+    </div>
+
+    <!-- STEPPER -->
+    <div class="stepper">
+      <div class="step" [class.active]="currentStep >= 1" (click)="currentStep = 1">
+        <div class="step-circle">1</div>
+        <span>Facility Details</span>
+      </div>
+
+      <div class="step-line" [class.active]="currentStep >= 2"></div>
+
+      <div class="step" [class.active]="currentStep >= 2" (click)="isStep1Valid() ? currentStep = 2 : null">
+        <div class="step-circle">2</div>
+        <span>Authorized Officer</span>
+      </div>
+
+      <div class="step-line" [class.active]="currentStep >= 3"></div>
+
+      <div class="step" [class.active]="currentStep >= 3" (click)="isStep1Valid() && isStep2Valid() ? currentStep = 3 : null">
+        <div class="step-circle">3</div>
+        <span>Statutory Documents</span>
+      </div>
+
+      <div class="step-line" [class.active]="currentStep >= 4"></div>
+
+      <div class="step" [class.active]="currentStep >= 4" (click)="isStep1Valid() && isStep2Valid() && isStep3Valid() ? currentStep = 4 : null">
+        <div class="step-circle">4</div>
+        <span>Account & Security</span>
+      </div>
+    </div>
+
+    <!-- FORM CARD -->
+    <form [formGroup]="regForm" class="form-card" novalidate>
+      <!-- STEP 1: Facility Profile & Location -->
+      <div *ngIf="currentStep === 1" class="step-content">
+        <div class="step-title-row">
+          <h3 class="step-title">1. Blood Bank Facility Information</h3>
+          <span class="step-badge">Step 1 of 4</span>
+        </div>
+
+        <div class="grid">
+          <div class="form-group col-span-2">
+            <label class="form-label">Blood Bank Name <span class="req">*</span></label>
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="e.g. Red Cross Regional Transfusion Center"
+              formControlName="bloodBankName"
+              [class.is-invalid]="f['bloodBankName'].touched && f['bloodBankName'].invalid"
+            />
+            <div class="form-error" *ngIf="f['bloodBankName'].touched && (f['bloodBankName'].errors?.['required'] || f['bloodBankName'].errors?.['minlength'])">
+              Blood bank name is required (min. 3 characters)
+            </div>
+            <div class="form-error" *ngIf="f['bloodBankName'].touched && f['bloodBankName'].errors?.['hasDigits']">
+              Blood bank name must not contain digits
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Registration / License Number <span class="req">*</span></label>
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="e.g. BB-REG-10492"
+              formControlName="registrationNumber"
+              [class.is-invalid]="f['registrationNumber'].touched && f['registrationNumber'].invalid"
+            />
+            <div class="form-hint">Format: e.g. BB-REG-10492 or LIC/MH/2024/91</div>
+            <div class="form-error" *ngIf="f['registrationNumber'].touched && f['registrationNumber'].invalid">
+              Valid registration number is required (4-25 alphanumeric/hyphens)
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Blood Bank Facility Type <span class="req">*</span></label>
+            <select 
+              class="form-select" 
+              formControlName="bloodBankType"
+              [class.is-invalid]="f['bloodBankType'].touched && f['bloodBankType'].invalid"
+            >
+              <option *ngFor="let type of bloodBankTypes" [value]="type">{{ type }}</option>
+            </select>
+            <div class="form-error" *ngIf="f['bloodBankType'].touched && f['bloodBankType'].invalid">
+              Facility type selection is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">ABDM HFR Facility ID <span class="req">*</span></label>
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="e.g. IN-MH-HFR-BB902"
+              formControlName="abdmHfrId"
+              [class.is-invalid]="f['abdmHfrId'].touched && f['abdmHfrId'].invalid"
+            />
+            <div class="form-error" *ngIf="f['abdmHfrId'].touched && f['abdmHfrId'].invalid">
+              ABDM HFR ID is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Official Contact Phone (10 Digits) <span class="req">*</span></label>
+            <input 
+              type="tel" 
+              maxlength="10"
+              class="form-control" 
+              placeholder="10-digit number starting with 6-9"
+              formControlName="contactNumber"
+              [class.is-invalid]="f['contactNumber'].touched && f['contactNumber'].invalid"
+            />
+            <div class="form-error" *ngIf="f['contactNumber'].touched && f['contactNumber'].invalid">
+              Must be a valid 10-digit mobile number starting with 6-9
+            </div>
+          </div>
+
+          <div class="form-group col-span-2">
+            <label class="form-label">Official Facility Email (Used for Login) <span class="req">*</span></label>
+            <input 
+              type="email" 
+              class="form-control" 
+              placeholder="e.g. contact@metrobloodbank.org"
+              formControlName="email"
+              [class.is-invalid]="f['email'].touched && f['email'].invalid"
+            />
+            <div class="form-error" *ngIf="f['email'].touched && f['email'].invalid">
+              Please enter a valid email address
+            </div>
+          </div>
+
+          <div class="form-group col-span-2">
+            <label class="form-label">Physical Street Address <span class="req">*</span></label>
+            <textarea 
+              rows="2"
+              class="form-control" 
+              placeholder="Complete hospital/facility complex, street address, and landmark"
+              formControlName="address"
+              [class.is-invalid]="f['address'].touched && f['address'].invalid"
+            ></textarea>
+            <div class="form-error" *ngIf="f['address'].touched && f['address'].invalid">
+              Physical address is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">City <span class="req">*</span></label>
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="e.g. Mumbai"
+              formControlName="city"
+              [class.is-invalid]="f['city'].touched && f['city'].invalid"
+            />
+            <div class="form-error" *ngIf="f['city'].touched && f['city'].invalid">
+              City is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">State / Union Territory <span class="req">*</span></label>
+            <select 
+              class="form-select" 
+              formControlName="state"
+              [class.is-invalid]="f['state'].touched && f['state'].invalid"
+            >
+              <option *ngFor="let s of indianStates" [value]="s">{{ s }}</option>
+            </select>
+            <div class="form-error" *ngIf="f['state'].touched && f['state'].invalid">
+              State selection is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">PIN Code <span class="req">*</span></label>
+            <input 
+              type="text" 
+              maxlength="6"
+              class="form-control" 
+              placeholder="e.g. 400001"
+              formControlName="pinCode"
+              [class.is-invalid]="f['pinCode'].touched && f['pinCode'].invalid"
+            />
+            <div class="form-error" *ngIf="f['pinCode'].touched && f['pinCode'].invalid">
+              Must be a valid 6-digit PIN code
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Latitude <span class="req">*</span></label>
+            <input 
+              type="number" 
+              step="0.0001"
+              class="form-control" 
+              placeholder="e.g. 19.0760"
+              formControlName="latitude"
+              [class.is-invalid]="f['latitude'].touched && f['latitude'].invalid"
+            />
+            <div class="form-error" *ngIf="f['latitude'].touched && f['latitude'].invalid">
+              Valid latitude is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Longitude <span class="req">*</span></label>
+            <input 
+              type="number" 
+              step="0.0001"
+              class="form-control" 
+              placeholder="e.g. 72.8777"
+              formControlName="longitude"
+              [class.is-invalid]="f['longitude'].touched && f['longitude'].invalid"
+            />
+            <div class="form-error" *ngIf="f['longitude'].touched && f['longitude'].invalid">
+              Valid longitude is required
+            </div>
+          </div>
+        </div>
+
+        <!-- Manual Coordinate Instructions Help Card -->
+        <div class="coord-guide-box">
+          <div class="coord-guide-header">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <strong>How to find your Latitude & Longitude on Google Maps</strong>
+          </div>
+          <div class="coord-guide-content">
+            <p class="guide-intro">Find the exact location of your blood bank on Google Maps:</p>
+            <ol>
+              <li>Open Google Maps (<strong>maps.google.com</strong>) on your computer or phone.</li>
+              <li>Search or right-click on your blood bank's exact facility location on the map.</li>
+              <li>Select the coordinates displayed at the top of the context menu (for example: <code>19.0760, 72.8777</code>).</li>
+              <li>Paste the first number as <strong>Latitude</strong> and the second number as <strong>Longitude</strong>.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="button-right">
+          <button type="button" class="btn btn-primary" (click)="nextStep()">
+            <span>Proceed to Step 2: Authorized Officer &rarr;</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 2: Authorized Person Details -->
+      <div *ngIf="currentStep === 2" class="step-content">
+        <div class="step-title-row">
+          <h3 class="step-title">2. Authorized Blood Bank Officer / Medical In-Charge</h3>
+          <span class="step-badge">Step 2 of 4</span>
+        </div>
+
+        <div class="grid">
+          <div class="form-group col-span-2">
+            <label class="form-label">Full Name of Medical Officer / In-Charge <span class="req">*</span></label>
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="e.g. Dr. Sunita Patel"
+              formControlName="authorizedPersonName"
+              [class.is-invalid]="f['authorizedPersonName'].touched && f['authorizedPersonName'].invalid"
+            />
+            <div class="form-error" *ngIf="f['authorizedPersonName'].touched && f['authorizedPersonName'].invalid">
+              Authorized person name is required
+            </div>
+          </div>
+
+          <div class="form-group col-span-2">
+            <label class="form-label">Designation / Role in Blood Bank <span class="req">*</span></label>
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="e.g. Blood Transfusion Officer / Director"
+              formControlName="designation"
+              [class.is-invalid]="f['designation'].touched && f['designation'].invalid"
+            />
+            <div class="form-error" *ngIf="f['designation'].touched && f['designation'].invalid">
+              Designation is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Officer Mobile Number (10 Digits) <span class="req">*</span></label>
+            <input 
+              type="tel" 
+              maxlength="10"
+              class="form-control" 
+              placeholder="10-digit mobile number"
+              formControlName="authorizedPersonPhone"
+              [class.is-invalid]="f['authorizedPersonPhone'].touched && f['authorizedPersonPhone'].invalid"
+            />
+            <div class="form-error" *ngIf="f['authorizedPersonPhone'].touched && f['authorizedPersonPhone'].invalid">
+              Must be a valid 10-digit phone number starting with 6-9
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Officer Professional Email <span class="req">*</span></label>
+            <input 
+              type="email" 
+              class="form-control" 
+              placeholder="e.g. director@metrobloodbank.org"
+              formControlName="authorizedPersonEmail"
+              [class.is-invalid]="f['authorizedPersonEmail'].touched && f['authorizedPersonEmail'].invalid"
+            />
+            <div class="form-error" *ngIf="f['authorizedPersonEmail'].touched && f['authorizedPersonEmail'].invalid">
+              Please enter a valid email address
+            </div>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button type="button" class="btn btn-secondary" (click)="previousStep()">&larr; Back to Step 1</button>
+          <button type="button" class="btn btn-primary" (click)="nextStep()">
+            <span>Proceed to Step 3: Documents &rarr;</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 3: Statutory Documents -->
+      <div *ngIf="currentStep === 3" class="step-content">
+        <div class="step-title-row">
+          <h3 class="step-title">3. Statutory Licenses & Certificates</h3>
+          <span class="step-badge">Step 3 of 4</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">State Drugs Control / SBTC Registration Certificate URL <span class="req">*</span></label>
+          <input 
+            type="url" 
+            class="form-control" 
+            placeholder="https://drive.google.com/license-cert.pdf or hosted certificate link"
+            formControlName="registrationCertificate"
+            [class.is-invalid]="f['registrationCertificate'].touched && f['registrationCertificate'].invalid"
+          />
+          <div class="form-hint">Provide valid document link containing .com or .pdf (e.g. hosted license PDF or Drive link).</div>
+          <div class="form-error" *ngIf="f['registrationCertificate'].touched && f['registrationCertificate'].errors?.['required']">
+            Statutory registration certificate link is required
+          </div>
+          <div class="form-error" *ngIf="f['registrationCertificate'].touched && f['registrationCertificate'].errors?.['invalidDocLink']">
+            Document link must contain a valid format (.com or .pdf)
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Additional Accreditation Document (NABH / ISO / MoU) (Optional)</label>
+          <input 
+            type="url" 
+            class="form-control" 
+            placeholder="https://mohfw.gov.in/bbms/nabh-cert.pdf"
+            formControlName="additionalDocuments"
+            [class.is-invalid]="f['additionalDocuments'].touched && f['additionalDocuments'].invalid"
+          />
+          <div class="form-hint">Optional secondary quality accreditation certificate link (.com or .pdf).</div>
+          <div class="form-error" *ngIf="f['additionalDocuments'].touched && f['additionalDocuments'].errors?.['invalidDocLink']">
+            Document link must contain a valid format (.com or .pdf)
+          </div>
+        </div>
+
+        <div class="info-alert">
+          <div class="info-alert-icon">🛡️</div>
+          <div>
+            <strong>Regulatory Audit Requirement:</strong>
+            <p>Submitted licenses are reviewed by Health Authority administrators before granting full hospital emergency synchronization permissions.</p>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button type="button" class="btn btn-secondary" (click)="previousStep()">&larr; Back to Step 2</button>
+          <button type="button" class="btn btn-primary" (click)="nextStep()">
+            <span>Proceed to Step 4: Account Security &rarr;</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 4: Account Security -->
+      <div *ngIf="currentStep === 4" class="step-content">
+        <div class="step-title-row">
+          <h3 class="step-title">4. Create Blood Bank Security Credentials</h3>
+          <span class="step-badge">Step 4 of 4</span>
+        </div>
+
+        <div class="grid">
+          <div class="form-group">
+            <label class="form-label">Account Password <span class="req">*</span></label>
+            <div class="input-icon-wrap">
+              <input 
+                [type]="showPassword ? 'text' : 'password'" 
+                class="form-control" 
+                placeholder="Minimum 8 characters"
+                formControlName="password"
+                [class.is-invalid]="f['password'].touched && f['password'].invalid"
+              />
+              <button type="button" class="btn-toggle-eye" (click)="showPassword = !showPassword">
+                {{ showPassword ? '👁️' : '🙈' }}
+              </button>
+            </div>
+            <div class="form-error" *ngIf="f['password'].touched && f['password'].invalid">
+              Password must be at least 8 characters long
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Confirm Password <span class="req">*</span></label>
+            <div class="input-icon-wrap">
+              <input 
+                [type]="showConfirmPassword ? 'text' : 'password'" 
+                class="form-control" 
+                placeholder="Re-enter password"
+                formControlName="confirmPassword"
+                [class.is-invalid]="f['confirmPassword'].touched && (f['confirmPassword'].invalid || regForm.hasError('mismatch'))"
+              />
+              <button type="button" class="btn-toggle-eye" (click)="showConfirmPassword = !showConfirmPassword">
+                {{ showConfirmPassword ? '👁️' : '🙈' }}
+              </button>
+            </div>
+            <div class="form-error" *ngIf="f['confirmPassword'].touched && regForm.hasError('mismatch')">
+              Passwords do not match
+            </div>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button type="button" class="btn btn-secondary" (click)="previousStep()">&larr; Back to Step 3</button>
+          <button type="button" class="btn btn-primary btn-lg" (click)="submitForm()" [disabled]="isLoading">
+            <span *ngIf="!isLoading">Submit Blood Bank Registration &rarr;</span>
+            <span *ngIf="isLoading">Submitting Application...</span>
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Bottom Navigation Links -->
+    <div class="auth-switch-links">
+      <p>Already have an accredited blood bank account? <a routerLink="/blood-bank/login" class="link-bold">Sign In to Blood Bank Portal</a></p>
+      <div class="other-roles-row">
+        <span>Need a different portal?</span>
+        <a routerLink="/hospital/register" class="role-chip">🏥 Register Hospital</a>
+        <a routerLink="/donor/register" class="role-chip">❤️ Register as Donor</a>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

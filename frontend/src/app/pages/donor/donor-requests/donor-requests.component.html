@@ -1,0 +1,124 @@
+<section class="panel">
+
+  <div class="request-dashboard-card">
+
+    <div class="request-card-header">
+
+      <div>
+        <h2>Urgent Blood Donation Requests</h2>
+        <p>
+          Regional hospital blood requests matching your blood group.
+        </p>
+      </div>
+
+      <div class="pending-badge">
+        {{ pendingCount }} Pending Response
+      </div>
+
+    </div>
+
+    <div class="request-table">
+
+      <div class="table-header">
+        <div>Request ID</div>
+        <div>Hospital / Facility</div>
+        <div>Required By</div>
+        <div>Status</div>
+        <div>Action</div>
+      </div>
+
+      <div
+        class="table-row"
+        *ngFor="let request of requests">
+
+        <div class="request-id">
+          #REQ-{{ request.donationRequestId }}
+        </div>
+
+        <div>
+          Hospital Facility #{{ request.hospitalId }}
+        </div>
+
+        <div>
+          {{ request.requestDate | date:'dd MMM yyyy' }}
+        </div>
+
+        <div>
+
+          <span
+            class="status-pill status-pending"
+            *ngIf="request.status === 'PENDING'">
+            Awaiting Donor Action
+          </span>
+
+          <span
+            class="status-pill status-accepted"
+            *ngIf="request.status === 'ACCEPTED'">
+            Accepted
+          </span>
+
+          <span
+            class="status-pill status-rejected"
+            *ngIf="request.status === 'REJECTED'">
+            Rejected
+          </span>
+
+          <span
+            class="status-pill status-completed"
+            *ngIf="request.status === 'COMPLETED'">
+            Completed
+          </span>
+
+        </div>
+
+        <div>
+
+          <div
+            class="action-buttons"
+            *ngIf="request.status === 'PENDING'">
+
+            <button
+              type="button"
+              class="btn-reject"
+              (click)="rejectRequest(request.donationRequestId)">
+              Reject
+            </button>
+
+            <button
+              type="button"
+              class="btn-accept"
+              (click)="acceptRequest(request.donationRequestId)">
+              Accept
+            </button>
+
+          </div>
+
+          <span
+            class="completed-text"
+            *ngIf="request.status !== 'PENDING'">
+            —
+          </span>
+
+        </div>
+
+      </div>
+
+      <div
+        class="empty-state"
+        *ngIf="requests.length === 0">
+
+        <div class="empty-icon">❤️</div>
+
+        <h3>No Active Donation Requests</h3>
+
+        <p>
+          You currently have no pending blood donation requests.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

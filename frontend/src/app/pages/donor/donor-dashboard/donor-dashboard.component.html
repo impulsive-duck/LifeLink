@@ -1,0 +1,263 @@
+<div class="dashboard-home" *ngIf="donor">
+  <!-- Top Welcome Banner -->
+  <div class="hero-welcome-card">
+    <div class="hero-left">
+      <div class="hero-badge-row">
+        <span class="badge badge-crimson">Verified Voluntary Donor</span>
+        <span class="badge badge-success" *ngIf="donor.availabilityStatus === 'AVAILABLE'">Eligible to Donate</span>
+        <span class="badge badge-warning" *ngIf="donor.availabilityStatus !== 'AVAILABLE'">In Rest Period</span>
+      </div>
+      <h1 class="hero-title">Welcome, {{ getCleanDonorName() }}</h1>
+      <p class="hero-subtitle">Your voluntary donations support regional healthcare facilities and save lives in critical emergencies.</p>
+    </div>
+    <div class="hero-right">
+      <div class="blood-group-badge">
+        <span class="blood-label">Registered Group</span>
+        <strong class="blood-val">{{ donor.bloodGroup }}</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Metrics Grid -->
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-icon-wrap icon-red">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+        </svg>
+      </div>
+      <div class="metric-content">
+        <span class="metric-title">Total Donations</span>
+        <div class="metric-number">{{ donor.donationCount || 0 }} <span class="metric-unit">Donations</span></div>
+        <span class="metric-subtext">Verified life-saving donations</span>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon-wrap icon-teal">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+          <line x1="16" x2="16" y1="2" y2="6"></line>
+          <line x1="8" x2="8" y1="2" y2="6"></line>
+          <line x1="3" x2="21" y1="10" y2="10"></line>
+        </svg>
+      </div>
+      <div class="metric-content">
+        <span class="metric-title">Last Donation Date</span>
+        <div class="metric-number">{{ donor.lastDonationDate || 'None recorded' }}</div>
+        <span class="metric-subtext">Safe interval: 90 days minimum</span>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon-wrap icon-blue">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+          <path d="m9 12 2 2 4-4"></path>
+        </svg>
+      </div>
+      <div class="metric-content">
+        <span class="metric-title">Health Parameters</span>
+        <div class="metric-number">{{ donor.hemoglobin || 13.5 }} <span class="metric-unit">g/dL</span> &bull; {{ donor.weight || 65 }} <span class="metric-unit">kg</span></div>
+        <span class="metric-subtext">Medical standard: Hb &ge; 12.5 &bull; Wt &ge; 45kg</span>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon-wrap icon-amber">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+      </div>
+      <div class="metric-content">
+        <span class="metric-title">Active Requests</span>
+        <div class="metric-number">{{ pendingRequests.length }} <span class="metric-unit">Pending</span></div>
+        <span class="metric-subtext">Live emergency requests matching group</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pending Emergency Requests Table -->
+  <div class="panel-card">
+    <div class="panel-header">
+      <div>
+        <h2 class="panel-title">Urgent Blood Donation Requests</h2>
+        <p class="panel-subtitle">Emergency hospital requests matching your blood group ({{ donor.bloodGroup }}).</p>
+      </div>
+      <span class="badge badge-warning" *ngIf="pendingRequests.length > 0">{{ pendingRequests.length }} Awaiting Response</span>
+    </div>
+
+    <div class="empty-state-box" *ngIf="pendingRequests.length === 0">
+      <div class="empty-icon-circle">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+      </div>
+      <h4 class="empty-title">All Caught Up!</h4>
+      <p class="empty-text">There are no active emergency blood requests in your region right now. We will notify you when a critical requirement arises.</p>
+    </div>
+
+    <div class="table-responsive" *ngIf="pendingRequests.length > 0">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Request ID</th>
+            <th>Hospital / Facility</th>
+            <th>Required Blood Group</th>
+            <th>Required By</th>
+            <th>Status</th>
+            <th style="text-align: right;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let request of pendingRequests">
+            <td><strong>#REQ-{{ request.donationRequestId }}</strong></td>
+            <td>Hospital Facility #{{ request.hospitalId }}</td>
+            <td><span class="badge badge-crimson">{{ donor.bloodGroup }}</span></td>
+            <td>{{ request.requestDate | date: "dd MMM yyyy" }}</td>
+            <td><span class="badge badge-warning">Awaiting Donor Action</span></td>
+            <td style="text-align: right;">
+              <button class="btn btn-primary btn-sm" (click)="openRequest(request)">
+                View & Respond
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Accepted Donations & Digital Certificate Registry -->
+  <div class="panel-card">
+    <div class="panel-header">
+      <div>
+        <h2 class="panel-title">Accepted Donations & Digital Certificate Registry</h2>
+        <p class="panel-subtitle">Upload statutory proof of donation and inspect authentic verified certificates.</p>
+      </div>
+      <span class="badge badge-info">{{ acceptedRequests.length }} Recorded</span>
+    </div>
+
+    <div class="empty-state-box" *ngIf="acceptedRequests.length === 0">
+      <div class="empty-icon-circle">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+          <line x1="16" x2="16" y1="2" y2="6"></line>
+          <line x1="8" x2="8" y1="2" y2="6"></line>
+        </svg>
+      </div>
+      <h4 class="empty-title">No Accepted Donations Yet</h4>
+      <p class="empty-text">Accepted emergency requests and verified donation certificates will appear in this registry.</p>
+    </div>
+
+    <div class="table-responsive" *ngIf="acceptedRequests.length > 0">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Donation ID</th>
+            <th>Facility</th>
+            <th>Date</th>
+            <th>Verification Status</th>
+            <th style="text-align: right;">Certificate Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let request of acceptedRequests">
+            <td><strong>#DON-{{ request.donationRequestId }}</strong></td>
+            <td>Hospital Facility #{{ request.hospitalId }}</td>
+            <td>{{ request.requestDate | date: "dd MMM yyyy" }}</td>
+            <td>
+              <ng-container *ngIf="certificateMap[request.donationRequestId]; else notUploaded">
+                <span class="badge badge-warning" *ngIf="certificateMap[request.donationRequestId]?.verificationStatus === 'PENDING_VERIFICATION'">
+                  ⏳ Under Blood Bank Review
+                </span>
+                <span class="badge badge-success" *ngIf="certificateMap[request.donationRequestId]?.verificationStatus === 'VERIFIED'">
+                  ✅ Authentic & Verified
+                </span>
+                <span class="badge badge-crimson" *ngIf="certificateMap[request.donationRequestId]?.verificationStatus === 'REJECTED'">
+                  ❌ Verification Declined
+                </span>
+                <span class="badge badge-info" *ngIf="certificateMap[request.donationRequestId]?.verificationStatus === 'UPLOADED'">
+                  📄 Document Uploaded
+                </span>
+              </ng-container>
+              <ng-template #notUploaded>
+                <span class="badge badge-neutral">Proof Not Uploaded</span>
+              </ng-template>
+            </td>
+            <td style="text-align: right;">
+              <button
+                *ngIf="!certificateMap[request.donationRequestId]"
+                class="btn btn-secondary btn-sm"
+                (click)="openCertificateRequest(request)"
+              >
+                📜 Upload Certificate
+              </button>
+
+              <button
+                *ngIf="certificateMap[request.donationRequestId]"
+                class="btn btn-outline btn-sm"
+                (click)="viewCertificate(request.donationRequestId)"
+              >
+                🔍 View Certificate
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Request Details Modal -->
+  <div class="modal-overlay" *ngIf="selectedRequest" (click)="closeRequestModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div>
+          <div class="card-badge">Emergency Alert Details</div>
+          <h2 class="modal-title">Emergency Blood Request #{{ selectedRequest.donationRequestId }}</h2>
+        </div>
+        <button class="btn-close" (click)="closeRequestModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">A healthcare facility requires urgent voluntary blood units matching your blood type ({{ donor.bloodGroup }}).</p>
+
+        <div class="detail-matrix">
+          <div class="detail-row">
+            <span class="detail-label">Requesting Facility:</span>
+            <strong>Hospital #{{ selectedRequest.hospitalId }}</strong>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Blood Group Required:</span>
+            <span class="badge badge-crimson">{{ donor.bloodGroup }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Date of Requirement:</span>
+            <strong>{{ selectedRequest.requestDate | date: "mediumDate" }}</strong>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Your Eligibility Status:</span>
+            <span class="badge badge-success">Eligible to Donate</span>
+          </div>
+        </div>
+
+        <div class="modal-actions" style="margin-top: 1.75rem; display: flex; gap: 0.75rem; justify-content: flex-end;">
+          <button class="btn btn-outline" (click)="rejectRequest(selectedRequest.donationRequestId)">
+            Decline
+          </button>
+          <button class="btn btn-primary" (click)="acceptRequest(selectedRequest.donationRequestId)">
+            Accept & Schedule Donation
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload Certificate Modal -->
+  <app-donor-certificates
+    *ngIf="showCertificateModal"
+    [donationRequest]="selectedCertificateRequest"
+    (certificateUploaded)="onCertificateUploaded($event)"
+    (close)="closeCertificateModal()"
+  ></app-donor-certificates>
+</div>

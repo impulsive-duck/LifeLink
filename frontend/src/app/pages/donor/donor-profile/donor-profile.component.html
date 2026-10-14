@@ -1,0 +1,162 @@
+<div class="profile-container" *ngIf="donor">
+  <!-- Page Header -->
+  <div class="profile-header">
+    <div class="header-content">
+      <div class="badge-role">Voluntary Donor Network</div>
+      <h1 class="page-title">{{ donor.fullName || 'Donor Profile' }}</h1>
+      <p class="page-subtitle">Manage your verified identity, emergency contact coordinates, and residential location.</p>
+    </div>
+    <div class="header-badge-wrap">
+      <span class="blood-badge">{{ donor.bloodGroup }}</span>
+      <span class="status-badge" [class.badge-available]="donor.availabilityStatus === 'AVAILABLE'">
+        {{ donor.availabilityStatus === 'AVAILABLE' ? '🟢 Active Donor' : '⏳ Inactive / Ineligible' }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Security Alert Banner (Requirement 16) -->
+  <div class="security-warning-card" *ngIf="simultaneousChangeError">
+    <div class="sec-icon">⚠️</div>
+    <div class="sec-text">
+      <strong>Simultaneous Contact Update Blocked:</strong>
+      <p>You cannot change both your <strong>Email Address</strong> and <strong>Mobile Phone Number</strong> in the same update. Please save changes to one coordinate first, and verify before modifying the other.</p>
+    </div>
+  </div>
+
+  <form class="profile-form-layout" [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+    <!-- Card 1: Verified Medical & Personal Identity (Readonly) -->
+    <div class="section-card">
+      <div class="card-header">
+        <div class="icon-box icon-health">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+          </svg>
+        </div>
+        <div>
+          <h3 class="card-title">Medical Parameters & Identity</h3>
+          <p class="card-sub">Statutory biological parameters recorded during blood bank intake.</p>
+        </div>
+        <span class="verified-tag">Authenticated</span>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group col-span-2">
+          <label class="form-label">Full Legal Name <span class="req">*</span></label>
+          <input type="text" formControlName="fullName" class="form-control" />
+          <div class="form-error" *ngIf="profileForm.get('fullName')?.touched && profileForm.get('fullName')?.errors?.['required']" style="color: #ef4444; font-size: 0.75rem; margin-top: 0.25rem;">
+            Full name is required
+          </div>
+          <div class="form-error" *ngIf="profileForm.get('fullName')?.touched && profileForm.get('fullName')?.errors?.['hasDigits']" style="color: #ef4444; font-size: 0.75rem; margin-top: 0.25rem;">
+            Full name must not contain digits
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Blood Group</label>
+          <input type="text" [value]="donor.bloodGroup" class="form-control readonly-input" readonly />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Biological Gender</label>
+          <input type="text" [value]="donor.gender" class="form-control readonly-input" readonly />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Date of Birth</label>
+          <input type="text" [value]="donor.dateofBirth" class="form-control readonly-input" readonly />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Registered Weight (kg)</label>
+          <input type="text" [value]="donor.weight + ' kg'" class="form-control readonly-input" readonly />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Hemoglobin Level</label>
+          <input type="text" [value]="donor.hemoglobin + ' g/dL'" class="form-control readonly-input" readonly />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Availability Status</label>
+          <input type="text" [value]="donor.availabilityStatus" class="form-control readonly-input" readonly />
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Contact Coordinates (With Security Rules) -->
+    <div class="section-card">
+      <div class="card-header">
+        <div class="icon-box icon-contact">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+          </svg>
+        </div>
+        <div>
+          <h3 class="card-title">Communication & Emergency Coordinates</h3>
+          <p class="card-sub">Used to dispatch critical blood request notifications to you.</p>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Personal Email Address <span class="req">*</span></label>
+          <input type="email" formControlName="email" class="form-control" />
+          <div class="form-hint">Must be a valid active email address.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Contact Mobile Number (10 Digits) <span class="req">*</span></label>
+          <input type="tel" maxlength="10" formControlName="mobileNumber" class="form-control" />
+          <div class="form-hint">Used for SMS emergency blood shortage broadcasts.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Residential Location -->
+    <div class="section-card">
+      <div class="card-header">
+        <div class="icon-box icon-address">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </div>
+        <div>
+          <h3 class="card-title">Residential Address</h3>
+          <p class="card-sub">Helps regional blood banks locate closest willing donors.</p>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group col-span-2">
+          <label class="form-label">Street Address & Landmark <span class="req">*</span></label>
+          <input type="text" formControlName="address" class="form-control" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">City / Town <span class="req">*</span></label>
+          <input type="text" formControlName="city" class="form-control" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">State / Union Territory <span class="req">*</span></label>
+          <select formControlName="state" class="form-select">
+            <option *ngFor="let state of indianStates" [value]="state">{{ state }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Bar -->
+    <div class="profile-actions-bar">
+      <button
+        type="submit"
+        class="btn btn-primary btn-lg"
+        [disabled]="profileForm.pristine || profileForm.invalid || isSaving || simultaneousChangeError"
+      >
+        <span *ngIf="!isSaving">💾 Save Profile Changes</span>
+        <span *ngIf="isSaving">Saving Records...</span>
+      </button>
+    </div>
+  </form>
+</div>

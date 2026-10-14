@@ -1,0 +1,103 @@
+<div class="modal-backdrop" (click)="close.emit()">
+  <section class="certificate-card" (click)="$event.stopPropagation()">
+    <div class="card-header-row">
+      <div>
+        <div class="card-badge">Digital Verification Registry</div>
+        <h3 class="card-title">Upload Donation Certificate</h3>
+        <p class="card-desc">Submit your statutory blood donation certificate for blood bank verification.</p>
+      </div>
+      <button type="button" class="btn-close-card" (click)="close.emit()">&times;</button>
+    </div>
+
+    <form [formGroup]="certificateForm" (ngSubmit)="uploadCertificate()" novalidate>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Donation Request ID</label>
+          <input [value]="'#REQ-' + request.donationRequestId" class="form-control readonly-field" readonly />
+          <span class="field-hint">Linked emergency request</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Certificate Number <span class="req">*</span></label>
+          <input 
+            type="text" 
+            formControlName="certificateNumber" 
+            class="form-control"
+            placeholder="e.g. CERT-2024-9102" 
+          />
+          <span class="field-hint">Format: e.g. CERT-2024-9102 or LIC-BB-019</span>
+          <small class="error" *ngIf="certificateForm.get('certificateNumber')?.touched && certificateForm.get('certificateNumber')?.errors?.['required']">
+            Certificate Number is required
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Issuing Blood Bank / Hospital <span class="req">*</span></label>
+          <input 
+            type="text" 
+            formControlName="issuingOrganizationName" 
+            class="form-control"
+            placeholder="e.g. Red Cross Regional Transfusion Center" 
+          />
+          <span class="field-hint">Name of the accredited blood center</span>
+          <small class="error" *ngIf="certificateForm.get('issuingOrganizationName')?.touched && certificateForm.get('issuingOrganizationName')?.errors?.['required']">
+            Issuing Organization Name is required
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Facility / Organization ID <span class="req">*</span></label>
+          <input 
+            type="number" 
+            formControlName="issuingOrganizationId" 
+            class="form-control"
+            placeholder="e.g. 1" 
+          />
+          <span class="field-hint">Numeric blood bank facility identifier</span>
+          <small class="error" *ngIf="certificateForm.get('issuingOrganizationId')?.touched && certificateForm.get('issuingOrganizationId')?.errors?.['required']">
+            Organization ID is required
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Donation Date <span class="req">*</span></label>
+          <input 
+            type="date" 
+            formControlName="donationDate" 
+            class="form-control" 
+          />
+          <span class="field-hint">Format: YYYY-MM-DD</span>
+          <small class="error" *ngIf="certificateForm.get('donationDate')?.touched && certificateForm.get('donationDate')?.errors?.['required']">
+            Donation Date is required
+          </small>
+        </div>
+
+        <div class="form-group full-width">
+          <label class="form-label">
+            Certificate Document Link / URL <span class="req">*</span>
+          </label>
+          <input
+            type="url"
+            formControlName="certificateUrl"
+            class="form-control"
+            placeholder="https://drive.google.com/cert.pdf or hosted link (.com / .pdf)"
+          />
+          <span class="field-hint">Valid document link (.pdf, .jpg, .jpeg, .png, or valid URL)</span>
+          <small class="error" *ngIf="certificateForm.get('certificateUrl')?.touched && certificateForm.get('certificateUrl')?.errors?.['required']">
+            Certificate Document Link is required
+          </small>
+          <small class="error" *ngIf="certificateForm.get('certificateUrl')?.touched && certificateForm.get('certificateUrl')?.errors?.['invalidDocLink']">
+            Please enter a valid certificate link. Use a valid URL or a certificate file format such as .pdf, .jpg, .jpeg or .png.
+          </small>
+        </div>
+      </div>
+
+      <div class="card-footer-actions">
+        <button type="button" class="btn-cancel" (click)="close.emit()">Cancel</button>
+        <button type="submit" class="upload-btn" [disabled]="certificateForm.invalid">
+          Upload & Send for Verification &rarr;
+        </button>
+      </div>
+    </form>
+  </section>
+</div>

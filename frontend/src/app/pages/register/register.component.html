@@ -1,0 +1,85 @@
+<div class="lifelink-auth-wrapper">
+  <!-- Minimal Top Navigation -->
+  <header class="lifelink-auth-nav">
+    <a routerLink="/" class="lifelink-brand-logo">
+      <div class="brand-icon-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+        </svg>
+      </div>
+      <span>LifeLink</span>
+    </a>
+    <div>
+      <a routerLink="/login" class="btn btn-sm btn-secondary">Existing User? Sign In &rarr;</a>
+    </div>
+  </header>
+
+  <!-- Role Selection Section -->
+  <main class="role-selection-content">
+    <div class="role-container">
+      <div class="role-header">
+        <span class="badge badge-crimson" style="margin-bottom: 0.75rem;">Account Registration</span>
+        <h1 class="role-title">Select Your Stakeholder Role</h1>
+        <p class="role-subtitle">Choose your operational role within the national LifeLink healthcare network.</p>
+      </div>
+
+      <div class="role-cards-grid">
+        <!-- Blood Bank Card -->
+        <div class="role-card">
+          <div class="role-icon-box icon-bb">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v20"></path>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          </div>
+          <span class="badge badge-warning">Regional Inventory Hub</span>
+          <h2 class="role-card-title">Blood Bank</h2>
+          <p class="role-card-desc">
+            Manage real-time regional blood stocks, fulfill urgent hospital dispatch requests, and coordinate with verified donors.
+          </p>
+          <button class="btn btn-secondary btn-block" (click)="goToBloodBankRegistration()">
+            Register Blood Bank &rarr;
+          </button>
+        </div>
+
+        <!-- Hospital Card -->
+        <div class="role-card">
+          <div class="role-icon-box icon-hosp">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+              <path d="M9 12h6"></path>
+              <path d="M12 9v6"></path>
+            </svg>
+          </div>
+          <span class="badge badge-info">Healthcare Facility</span>
+          <h2 class="role-card-title">Hospital</h2>
+          <p class="role-card-desc">
+            Raise urgent blood requirement requests to nearby blood banks, monitor dispatch fulfillment, and manage facility stocks.
+          </p>
+          <button class="btn btn-secondary btn-block" (click)="goToHospitalRegister()">
+            Register Hospital &rarr;
+          </button>
+        </div>
+
+        <!-- Donor Card -->
+        <div class="role-card featured-role">
+          <div class="role-icon-box icon-donor">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+            </svg>
+          </div>
+          <span class="badge badge-crimson">Voluntary Savior</span>
+          <h2 class="role-card-title">Blood Donor</h2>
+          <p class="role-card-desc">
+            Receive emergency blood alerts matching your blood group, respond to critical hospital needs, and earn digital certificates.
+          </p>
+          <button class="btn btn-primary btn-block" (click)="goToDonorRegister()">
+            Register as Donor &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <app-footer></app-footer>
+</div>
